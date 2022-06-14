@@ -14,10 +14,20 @@ async function run() {
         let versionSpec = taskLib.getInput('versionSpec', true);
         let checkLatest: boolean = taskLib.getBoolInput('checkLatest', false);
         await getNode(versionSpec, checkLatest);
+        await installNpm();
         telemetry.emitTelemetry('TaskHub', 'NodeToolV0', { versionSpec, checkLatest, force32bit });
     }
     catch (error) {
         taskLib.setResult(taskLib.TaskResult.Failed, error.message);
+    }
+}
+
+async function installNpm() {
+    let version = taskLib.getInput('npmVersion', false);
+    if(version) {
+        let npm = taskLib.tool(taskLib.which('npm', true));
+        npm.arg(['i', '-g', 'npm@' + version]);
+        await npm.exec();
     }
 }
 

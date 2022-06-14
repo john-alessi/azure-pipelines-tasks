@@ -8,11 +8,25 @@ let tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
 
 tmr.setInput('versionSpec', '0.12.18');
 tmr.setInput('checkLatest', 'false');
+tmr.setInput('npmVersion', '8.12.1');
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers>{
     "assertAgent": {
         "2.115.1": true
-    }};
+    },
+    "which": {
+        "npm": "/usr/local/bin/npm",
+    },
+    "exec": {
+        "/usr/local/bin/npm i -g npm@8.12.1": {
+            "code": 0,
+            "stdout": "npm output here",
+        },
+    },
+    "checkPath": {
+        "/usr/local/bin/npm": true,
+    },
+};
 tmr.setAnswers(a);
 
 
